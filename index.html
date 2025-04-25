@@ -46,36 +46,101 @@
             margin-bottom: 50px;
         }
         
-        #contact-container {
+        .button-container {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .nav-button {
+            position: relative;
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 4px;
             padding: 8px 20px;
             transition: all 0.3s ease;
             text-align: center;
+            overflow: hidden;
         }
         
-        #contact-container:hover {
+        .nav-button:hover {
             background: rgba(0, 0, 0, 0.7);
             border: 1px solid white;
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
         }
         
-        #contact-link {
+        .nav-link {
+            position: relative;
             font-family: 'Pixelify Sans', monospace;
             font-size: 18px;
             color: white;
             text-decoration: none;
             transition: all 0.3s ease;
+            z-index: 1;
         }
         
-        #contact-link:hover {
+        .nav-link:hover {
             color: #ffffff;
             text-shadow: 0 0 8px white;
+        }
+        
+        /* Sparkle effect */
+        .nav-button:hover::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            animation: sparkle 1.5s infinite;
+            opacity: 0;
+            z-index: 0;
+        }
+        
+        @keyframes sparkle {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        /* Random sparkle dots */
+        .nav-button:hover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(2px 2px at 20% 30%, white 50%, transparent 100%),
+                radial-gradient(2px 2px at 80% 70%, white 50%, transparent 100%),
+                radial-gradient(2px 2px at 40% 20%, white 50%, transparent 100%),
+                radial-gradient(2px 2px at 60% 90%, white 50%, transparent 100%),
+                radial-gradient(2px 2px at 10% 50%, white 50%, transparent 100%),
+                radial-gradient(2px 2px at 90% 20%, white 50%, transparent 100%);
+            animation: twinkle 1s infinite alternate;
+            opacity: 0;
+        }
+        
+        @keyframes twinkle {
+            0%, 40% {
+                opacity: 0;
+            }
+            60%, 100% {
+                opacity: 0.7;
+            }
         }
     </style>
 </head>
@@ -86,15 +151,23 @@
 ▓██  ▀█ ██▒▒███   ▒█░ █ ░█▒██░▄▄▄░▒███   ▓██  ▀█ ██▒░ ▓██▄        ▒██░    ▒██░  ██▒▒██░    
 ▓██▒  ▐▌██▒▒▓█  ▄ ░█░ █ ░█░▓█  ██▓▒▓█  ▄ ▓██▒  ▐▌██▒  ▒   ██▒     ▒██░    ▒██   ██░▒██░    
 ▒██░   ▓██░░▒████▒░░██▒██▓░▒▓███▀▒░▒████▒▒██░   ▓██░▒██████▒▒ ██▓ ░██████▒░ ████▓▒░░██████▒
-░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▓░▒ ▒  ░▒   ▒ ░░ ▒░ ░░ ▒░   ▒ ▒ ▒ ▒▓▒ ▒ ░ ▒▓▒ ░ ▒░▓  ░░ ▒░▒░▒░ ░ ▒░▓  ░
+░ ▒░   ▒ ▒ ░░ ▒░ ░░ ▓░▒ ▒  ░▒   ▒ ░░ ▒░ ░░ ▒░   ░ ▒ ▒ ▒▓▒ ▒ ░ ▒▓▒ ░ ▒░▓  ░░ ▒░▒░▒░ ░ ▒░▓  ░
 ░ ░░   ░ ▒░ ░ ░  ░  ▒ ░ ░   ░   ░  ░ ░  ░░ ░░   ░ ▒░░ ░▒  ░ ░ ░▒  ░ ░ ▒  ░  ░ ▒ ▒░ ░ ░ ▒  ░
    ░   ░ ░    ░     ░   ░ ░ ░   ░    ░      ░   ░ ░ ░  ░  ░   ░     ░ ░   ░ ░ ░ ▒    ░ ░   
          ░    ░  ░    ░         ░    ░  ░         ░       ░    ░      ░  ░    ░ ░      ░  ░
                                                                ░                             
     </div>
     
-    <div id="contact-container">
-        <a id="contact-link" href="https://newgens.lol/Putty" target="_blank">CONTACT</a>
+    <div class="button-container">
+        <div class="nav-button">
+            <a class="nav-link" href="#">BLOG</a>
+        </div>
+        <div class="nav-button">
+            <a class="nav-link" href="https://newgens.lol/Putty" target="_blank">CONTACT</a>
+        </div>
+        <div class="nav-button">
+            <a class="nav-link" href="#">MEMBERS</a>
+        </div>
     </div>
 
     <script>
