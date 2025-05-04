@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Putty</title>
+  <link rel="icon" href="images/Crown.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: black;
+    }
+    canvas {
+      display: block;
+    }
+    .blurred-rectangle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 400px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
+    }
+    .image-container {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .text-container {
+      position: absolute;
+      top: 220px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 48px;
+      color: white;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+    .icon-container {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .icon-container img {
+      width: 48px;
+      height: 48px;
+      filter: brightness(0) invert(1);
+      transition: transform 0.2s ease, filter 0.2s ease;
+      cursor: pointer;
+    }
+    .icon-container img:hover {
+      transform: scale(1.2);
+      filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+    }
+    .icon-container img[src*="othertele"] {
+      filter: invert(1);
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .overlay-text {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 32px;
+      color: white;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+    .typing-container {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Press Start 2P', cursive;
+      font-size: 14px;
+      color: white;
+      text-align: center;
+      width: 90%;
+      max-width: 550px;
+    }
+    .typing-text {
+      display: inline-block;
+      overflow: hidden;
+      border-right: 2px solid white;
+      white-space: nowrap;
+      animation: blink-caret 0.75s step-end infinite;
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: white; }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="overlay-text">Click To Enter Putty's Galaxy</div>
+  </div>
+
+  <canvas id="starfield"></canvas>
+
+<div class="blurred-rectangle">
+  <div class="image-container">
+    <img src="images/demon.jpg" alt="Demon Image">
+  </div>
+  <div class="text-container">Putty</div>
+  <div class="icon-container">
+    <a href="https://t.me/puttylover" target="_blank">
+      <img src="images/othertele.png" alt="Telegram">
+    </a>
+    <a href="https://vrchat.com/home/user/usr_17e28ac5-6153-4beb-bba4-190a29d8ce83" target="_blank">
+      <img src="images/vrchat.svg" alt="VRChat">
+    </a>
+    <a href="https://x.com/PuttyLover_" target="_blank">
+      <img src="images/x.png" alt="X">
+    </a>
+    <a href="https://signal.me/#eu/mwUCcNQMzLRvdSKluIJJfoSciTMLTyW_4pg55hoJtyCvCDhpyzdLeZ7H8x_0Y3X8" target="_blank">
+      <img src="images/Signal.png" alt="Signal">
+    </a>
+  </div>
+  <div class="typing-container">
+    <div class="typing-text" id="typing-text"></div>
+  </div>
+</div>
+</div>
+  <audio id="background-music" src="media/LikeHim.mp3"></audio>
+
+  <script>
+    // Function to detect mobile devices
+    function isMobile() {
+      return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+    }
+
+    // Redirect mobile users to the desired URL
+    if (isMobile()) {
+      window.location.href = "https://newgens.lol/Putty#/";
+    }
+
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const stars = [];
+    const numStars = 1000;
+    const starSpeed = 0.05;
+
+    function initStars() {
+      stars.length = 0;
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2 + 1,
+          brightness: Math.random() * 0.5 + 0.5,
+          glimmerSpeed: Math.random() * 0.02 + 0.01
+        });
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'black';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      stars.forEach(star => {
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.brightness})`;
+        ctx.fillRect(star.x, star.y, star.size, star.size);
+      });
+    }
+
+    function updateStars() {
+      stars.forEach(star => {
+        star.x += starSpeed;
+        if (star.x > canvas.width) {
+          star.x = 0;
+          star.y = Math.random() * canvas.height;
+          star.brightness = Math.random() * 0.5 + 0.5;
+        }
+        star.brightness += star.glimmerSpeed;
+        if (star.brightness <= 0.5 || star.brightness >= 1) {
+          star.glimmerSpeed *= -1;
+        }
+      });
+    }
+
+    function animate() {
+      drawStars();
+      updateStars();
+      requestAnimationFrame(animate);
+    }
+
+    const typingText = document.getElementById('typing-text');
+    const quotes = [
+      "Lose the ego ethug",
+      "written by me :3",
+      "I <3 sublime txt editor",
+      "Putty lover",
+      "Linux mint is based",
+      "stop flashcarding fatty",
+      "python :3",
+      "everyone should just vibe",
+      "arch is torture but to each his own",
+      "thank god for public java/css effects",
+      "kardi is fat",
+      "love my homies no homo",
+      "erm I'm witteraly in da mainfwame"
+    ];
+
+    quotes.sort(() => Math.random() - 0.5);
+
+    let quoteIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typeQuote() {
+      const currentQuote = quotes[quoteIndex];
+      if (!isDeleting) {
+        typingText.textContent = currentQuote.slice(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === currentQuote.length) {
+          isDeleting = true;
+          setTimeout(typeQuote, 2000);
+        } else {
+          setTimeout(typeQuote, 100);
+        }
+      } else {
+        typingText.textContent = currentQuote.slice(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+          isDeleting = false;
+          quoteIndex = (quoteIndex + 1) % quotes.length;
+          setTimeout(typeQuote, 500);
+        } else {
+          setTimeout(typeQuote, 50);
+        }
+      }
+    }
+
+    const overlay = document.querySelector('.overlay');
+    const backgroundMusic = document.getElementById('background-music');
+
+    overlay.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      backgroundMusic.volume = 0.5;
+      backgroundMusic.play();
+    });
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initStars();
+    });
+
+    initStars();
+    animate();
+    typeQuote();
+  </script>
+</body>
+</html>
