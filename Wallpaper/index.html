@@ -95,9 +95,10 @@
 
     .quote-container {
       position: absolute;
-      bottom: 80px;
-      left: 30px;
-      width: calc(100% - 60px);
+      bottom: 20px; /* Slightly raised from the very bottom */
+      left: 50%;
+      transform: translateX(-50%); /* This will center the container horizontally */
+      width: calc(100% - 60px); /* Ensure some padding on the sides */
       padding: 20px;
       font-size: 1.2rem;
       text-align: center;
