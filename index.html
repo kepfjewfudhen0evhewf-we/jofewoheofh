@@ -28,120 +28,98 @@
             left: 0;
             width: 100%;
             height: 100%;
+            background: rgba(0, 0, 0, 0.3); /* Darken effect */
             backdrop-filter: blur(8px);
             z-index: -1;
         }
         
         #ascii-container {
             white-space: pre;
-            font-size: 16px;
-            line-height: 16px;
+            font-size: 18px; /* Adjusted font size */
+            line-height: 18px;
             transition: transform 0.15s ease-out;
             text-align: center;
             transform-style: preserve-3d;
             text-shadow: 0 0 5px rgba(0,0,0,0.8);
             transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
             padding: 30px;
-            margin: -30px;
+            margin: 0;
             margin-bottom: 50px;
+            max-width: 90%;
         }
-        
-        .button-container {
-            position: fixed;
-            bottom: 20px;
+
+        /* Dropdown menu styling */
+        .dropdown {
+            position: absolute;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            z-index: 10;
         }
-        
-        .nav-button {
-            position: relative;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            padding: 8px 20px;
+
+        /* Dropdown button styling (just the arrow) */
+        .dropdown button {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 20px;
+            color: white;
+            font-size: 24px; /* Larger arrow size */
+            border-radius: 5px;
+            cursor: pointer;
             transition: all 0.3s ease;
-            text-align: center;
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Pixelify Sans', monospace;
         }
-        
-        .nav-button:hover {
-            background: rgba(0, 0, 0, 0.7);
+
+        .dropdown button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
             border: 1px solid white;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
         }
-        
-        .nav-link {
-            position: relative;
+
+        .dropdown button::after {
+            content: ' ▼'; /* Dropdown arrow */
+            font-size: 24px; /* Bigger arrow */
+            margin-left: 8px;
+        }
+
+        /* Dropdown content styling */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 35px; /* Adjusted space between button and dropdown */
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            padding: 12px 20px;
             font-family: 'Pixelify Sans', monospace;
             font-size: 18px;
             color: white;
             text-decoration: none;
             transition: all 0.3s ease;
-            z-index: 1;
+            display: block;
         }
-        
-        .nav-link:hover {
+
+        .dropdown-content a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
             color: #ffffff;
             text-shadow: 0 0 8px white;
         }
-        
-        /* Sparkle effect */
-        .nav-button:hover::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
-            animation: sparkle 1.5s infinite;
-            opacity: 0;
-            z-index: 0;
-        }
-        
-        @keyframes sparkle {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: scale(1.2);
-                opacity: 0;
-            }
-        }
-        
-        /* Random sparkle dots */
-        .nav-button:hover::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(2px 2px at 20% 30%, white 50%, transparent 100%),
-                radial-gradient(2px 2px at 80% 70%, white 50%, transparent 100%),
-                radial-gradient(2px 2px at 40% 20%, white 50%, transparent 100%),
-                radial-gradient(2px 2px at 60% 90%, white 50%, transparent 100%),
-                radial-gradient(2px 2px at 10% 50%, white 50%, transparent 100%),
-                radial-gradient(2px 2px at 90% 20%, white 50%, transparent 100%);
-            animation: twinkle 1s infinite alternate;
-            opacity: 0;
-        }
-        
-        @keyframes twinkle {
-            0%, 40% {
-                opacity: 0;
-            }
-            60%, 100% {
-                opacity: 0.7;
-            }
-        }
+
     </style>
 </head>
 <body>
@@ -157,16 +135,14 @@
          ░    ░  ░    ░         ░    ░  ░         ░       ░    ░      ░  ░    ░ ░      ░  ░
                                                                ░                             
     </div>
-    
-    <div class="button-container">
-        <div class="nav-button">
-            <a class="nav-link" href="#">BLOG</a>
-        </div>
-        <div class="nav-button">
-            <a class="nav-link" href="https://newgens.lol/Putty" target="_blank">CONTACT</a>
-        </div>
-        <div class="nav-button">
-            <a class="nav-link" href="#">MEMBERS</a>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown">
+        <button>▼</button>
+        <div class="dropdown-content">
+            <a href="https://blog.newgens.lol" target="_blank">BLOG</a>
+            <a href="https://newgens.lol/Putty" target="_blank">CONTACT</a>
+            <a href="#">MEMBERS</a>
         </div>
     </div>
 
