@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Putty Mobile</title>
+  <title>Putty - Mobile Version</title>
   <link rel="icon" href="images/Crown.ico" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
@@ -18,26 +18,32 @@
     canvas {
       display: block;
     }
+
+    /* Blurred Rectangle Styles */
     .blurred-rectangle {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 80%;
-      height: 400px;
+      width: 90%;
+      height: 80%;
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(5px);
       border-radius: 15px;
       border: 2px solid rgba(255, 255, 255, 0.5);
       box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
     }
+
+    /* Image Container */
     .image-container {
       position: absolute;
       top: 20px;
       left: 50%;
       transform: translateX(-50%);
-      width: 100px;
-      height: 100px;
+      width: 30vw;
+      height: 30vw;
+      max-width: 150px;
+      max-height: 150px;
       border-radius: 50%;
       border: 2px solid rgba(255, 255, 255, 0.5);
       box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.3);
@@ -51,29 +57,36 @@
       height: 100%;
       object-fit: cover;
     }
+
+    /* Text Container */
     .text-container {
       position: absolute;
-      top: 140px;
+      top: 150px;
       left: 50%;
       transform: translateX(-50%);
       text-align: center;
       font-family: 'Press Start 2P', cursive;
-      font-size: 24px;
+      font-size: 6vw;
       color: white;
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
     }
+
+    /* Icon Container */
     .icon-container {
       position: absolute;
-      top: 50%;
+      top: 200px;
       left: 50%;
-      transform: translateY(-50%) translateX(-50%);
+      transform: translateX(-50%);
       display: flex;
-      flex-direction: row;
-      gap: 15px;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
     .icon-container img {
-      width: 40px;
-      height: 40px;
+      width: 12vw;
+      height: 12vw;
+      max-width: 48px;
+      max-height: 48px;
       filter: brightness(0) invert(1);
       transition: transform 0.2s ease, filter 0.2s ease;
       cursor: pointer;
@@ -82,6 +95,8 @@
       transform: scale(1.2);
       filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
     }
+
+    /* Overlay Styles */
     .overlay {
       position: fixed;
       top: 0;
@@ -98,52 +113,27 @@
     }
     .overlay-text {
       font-family: 'Press Start 2P', cursive;
-      font-size: 32px;
+      font-size: 5vw;
       color: white;
       text-align: center;
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.6);
     }
-    .typing-container {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: 'Press Start 2P', cursive;
-      font-size: 14px;
-      color: white;
-      text-align: center;
-      width: 90%;
-      max-width: 550px;
-    }
-    .typing-text {
-      display: inline-block;
-      overflow: hidden;
-      border-right: 2px solid white;
-      white-space: nowrap;
-      animation: blink-caret 0.75s step-end infinite;
-    }
-    @keyframes blink-caret {
-      from, to { border-color: transparent; }
-      50% { border-color: white; }
-    }
 
-    /* Mobile-specific adjustments */
-    @media (max-width: 768px) {
+    @media (min-width: 768px) {
       .blurred-rectangle {
-        width: 90%;
-        height: 350px;
+        width: 600px;
+        height: 400px;
+      }
+      .image-container {
+        width: 150px;
+        height: 150px;
       }
       .text-container {
-        font-size: 20px;
-      }
-      .icon-container {
-        flex-direction: row;
-        justify-content: center;
-        width: 100%;
+        font-size: 48px;
       }
       .icon-container img {
-        width: 35px;
-        height: 35px;
+        width: 48px;
+        height: 48px;
       }
     }
   </style>
@@ -155,29 +145,26 @@
 
   <canvas id="starfield"></canvas>
 
-<div class="blurred-rectangle">
-  <div class="image-container">
-    <img src="images/demon.jpg" alt="Demon Image">
+  <div class="blurred-rectangle">
+    <div class="image-container">
+      <img src="images/demon.jpg" alt="Demon Image">
+    </div>
+    <div class="text-container">Putty</div>
+    <div class="icon-container">
+      <a href="https://t.me/puttylover" target="_blank">
+        <img src="images/othertele.png" alt="Telegram">
+      </a>
+      <a href="https://vrchat.com/home/user/usr_17e28ac5-6153-4beb-bba4-190a29d8ce83" target="_blank">
+        <img src="images/vrchat.svg" alt="VRChat">
+      </a>
+      <a href="https://x.com/PuttyLover_" target="_blank">
+        <img src="images/x.png" alt="X">
+      </a>
+      <a href="https://signal.me/#eu/mwUCcNQMzLRvdSKluIJJfoSciTMLTyW_4pg55hoJtyCvCDhpyzdLeZ7H8x_0Y3X8" target="_blank">
+        <img src="images/Signal.png" alt="Signal">
+      </a>
+    </div>
   </div>
-  <div class="text-container">Putty</div>
-  <div class="icon-container">
-    <a href="https://t.me/puttylover" target="_blank">
-      <img src="images/othertele.png" alt="Telegram">
-    </a>
-    <a href="https://vrchat.com/home/user/usr_17e28ac5-6153-4beb-bba4-190a29d8ce83" target="_blank">
-      <img src="images/vrchat.svg" alt="VRChat">
-    </a>
-    <a href="https://x.com/PuttyLover_" target="_blank">
-      <img src="images/x.png" alt="X">
-    </a>
-    <a href="https://signal.me/#eu/mwUCcNQMzLRvdSKluIJJfoSciTMLTyW_4pg55hoJtyCvCDhpyzdLeZ7H8x_0Y3X8" target="_blank">
-      <img src="images/Signal.png" alt="Signal">
-    </a>
-  </div>
-  <div class="typing-container">
-    <div class="typing-text" id="typing-text"></div>
-  </div>
-</div>
 
   <audio id="background-music" src="media/LikeHim.mp3"></audio>
 
@@ -187,7 +174,7 @@
     }
 
     if (isMobile()) {
-      window.location.href = "https://newgens.lol/Puttym/";
+      window.location.href = "https://newgens.lol/Putty#/";
     }
 
     const canvas = document.getElementById('starfield');
@@ -244,53 +231,6 @@
       requestAnimationFrame(animate);
     }
 
-    const typingText = document.getElementById('typing-text');
-    const quotes = [
-      "Lose the ego ethug",
-      "written by me :3",
-      "I <3 sublime txt editor",
-      "Putty lover",
-      "Linux mint is based",
-      "stop flashcarding fatty",
-      "python :3",
-      "everyone should just vibe",
-      "arch is torture but to each his own",
-      "thank god for public java/css effects",
-      "kardi is fat",
-      "love my homies no homo",
-      "erm I'm witteraly in da mainfwame"
-    ];
-
-    quotes.sort(() => Math.random() - 0.5);
-
-    let quoteIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-
-    function typeQuote() {
-      const currentQuote = quotes[quoteIndex];
-      if (!isDeleting) {
-        typingText.textContent = currentQuote.slice(0, charIndex + 1);
-        charIndex++;
-        if (charIndex === currentQuote.length) {
-          isDeleting = true;
-          setTimeout(typeQuote, 2000);
-        } else {
-          setTimeout(typeQuote, 100);
-        }
-      } else {
-        typingText.textContent = currentQuote.slice(0, charIndex - 1);
-        charIndex--;
-        if (charIndex === 0) {
-          isDeleting = false;
-          quoteIndex = (quoteIndex + 1) % quotes.length;
-          setTimeout(typeQuote, 500);
-        } else {
-          setTimeout(typeQuote, 50);
-        }
-      }
-    }
-
     const overlay = document.querySelector('.overlay');
     const backgroundMusic = document.getElementById('background-music');
 
@@ -308,7 +248,6 @@
 
     initStars();
     animate();
-    typeQuote();
   </script>
 </body>
 </html>
