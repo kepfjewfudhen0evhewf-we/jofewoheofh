@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZRE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #000 0%, #111 100%);
+      color: #fff;
+      font-family: 'Pixelify Sans', monospace;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 6rem;
+      letter-spacing: 0.3em;
+      text-shadow: 0 0 10px #fff, 0 0 20px #999;
+      animation: flicker 8s infinite;
+      z-index: 1;
+    }
+
+    .clock {
+      position: absolute;
+      bottom: 20px;
+      right: 30px;
+      font-size: 1.5rem;
+      color: #ccc;
+      text-shadow: 0 0 6px #aaa, 0 0 12px #666;
+      animation: glowPulse 4s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .newsfeed {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      width: 300px;
+      height: 80vh;
+      overflow-y: auto;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 8px;
+      color: #fff;
+      z-index: 1;
+      font-size: 1rem;
+    }
+
+    .newsfeed h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .newsfeed ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .newsfeed li {
+      margin-bottom: 15px;
+    }
+
+    .newsfeed a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .newsfeed a:hover {
+      color: #00f;
+    }
+
+    .scanline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.02) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .glow-overlay {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% {
+        text-shadow: 0 0 6px #aaa, 0 0 12px #666;
+      }
+      50% {
+        text-shadow: 0 0 12px #fff, 0 0 24px #999;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-overlay"></div>
+  <div class="scanline"></div>
+  <h1>ZRE</h1>
+  <div class="clock" id="clock"></div>
+  <div class="newsfeed" id="newsfeed">
+    <h2>Cybersecurity News</h2>
+    <ul id="newsList"></ul>
+  </div>
+
+  <script>
+    function updateClock() {
+      const clock = document.getElementById('clock');
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      clock.textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
+    }
+
+    async function fetchCybersecurityNews() {
+      const apiKey = '1e2ea502c0584cb6904acd4747242c4e';
+      const url = `https://newsapi.org/v2/everything?q=cybersecurity&apiKey=${apiKey}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const newsList = document.getElementById('newsList');
+
+        data.articles.slice(0, 5).forEach(article => {
+          const listItem = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = article.url;
+          link.target = "_blank";
+          link.textContent = article.title;
+          listItem.appendChild(link);
+          newsList.appendChild(listItem);
+        });
+      } catch (error) {
+        console.error('Error fetching news:', error);
+      }
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+    fetchCybersecurityNews();
+  </script>
+</body>
+</html>
