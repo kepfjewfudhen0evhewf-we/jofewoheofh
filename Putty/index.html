@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Putty</title>
@@ -163,6 +165,16 @@
   <audio id="background-music" src="media/LikeHim.mp3"></audio>
 
   <script>
+    // Function to detect mobile devices
+    function isMobile() {
+      return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+    }
+
+    // Redirect mobile users to the desired URL
+    if (isMobile()) {
+      window.location.href = "https://newgens.lol/Putty#/";
+    }
+
     const canvas = document.getElementById('starfield');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -283,6 +295,5 @@
     animate();
     typeQuote();
   </script>
-
-
-</body></html>
+</body>
+</html>
