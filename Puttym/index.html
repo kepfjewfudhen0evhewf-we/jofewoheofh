@@ -156,8 +156,8 @@
       return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(navigator.userAgent);
     }
 
-    if (isMobile()) {
-      window.location.href = "https://newgens.lol/Putty#/";
+    if (!isMobile()) {
+      window.location.href = "https://newgens.lol/Putty";
     }
 
     const canvas = document.getElementById('starfield');
